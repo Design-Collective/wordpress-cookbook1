@@ -18,11 +18,18 @@
 # limitations under the License.
 #
 
+default['wordpress']['db']['name'] = "wordpressdb"
+default['wordpress']['db']['user'] = "wordpressuser"
+default['wordpress']['db']['pass'] = nil
+default['wordpress']['db']['prefix'] = 'wp_'
+# default['wordpress']['db']['host'] = 'localhost'
+
 # General settings
 default['wordpress']['version'] = "latest"
 default['wordpress']['checksum'] = ""
 default['wordpress']['repourl'] = "http://wordpress.org/"
-default['wordpress']['dir'] = "/var/www/wordpress"
+default['wordpress']['parent_dir'] = '/var/www'
+default['wordpress']['dir'] = "#{node['wordpress']['parent_dir']}/wordpress"
 default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
 default['wordpress']['server_aliases'] = [node['fqdn']]
