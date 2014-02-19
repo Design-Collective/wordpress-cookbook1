@@ -77,7 +77,7 @@ execute "Copy Wordpress Config into Parent Dir" do
 end
 
 execute "Move WP-Content from WP-Dir" do
-  command "cp #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
+  command "cp -R #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
   creates "#{node['wordpress']['parent_dir']}/wp-content"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content/index.php")}
 end
