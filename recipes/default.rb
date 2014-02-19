@@ -93,7 +93,6 @@ end
 
 template "#{node['wordpress']['parent_dir']}/index.php" do
   source 'wp-index.erb'
-  creates "#{node['wordpress']['parent_dir']}/index.php"
   action :create
 end
 
