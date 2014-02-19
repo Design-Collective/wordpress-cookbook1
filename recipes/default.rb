@@ -70,6 +70,39 @@ execute "untar-wordpress" do
   creates "#{node['wordpress']['dir']}/wp-settings.php"
 end
 
+
+execute "Copy Wordpress Config into Parent Dir" do
+  command "cp #{node['wordpress']['dir']}/wp-config-sample.php #{node['wordpress']['parent_dir']}/wp-config.php"
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-config.php")}
+end
+
+execute "Move WP-Content from WP-Dir" do
+  command "cp #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
+  creates "#{node['wordpress']['parent_dir']}/wp-content"
+  not_if {::Directory.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
+end
+
+execute "Cleaup Themes" do
+  command "rm #{node['wordpress']['dir']}/plugins/hello.php && rm -rf #{node['wordpress']['dir']}/themes/twentytwelve && rm -rf #{node['wordpress']['dir']}/themes/twentyten && rm -rf #{node['wordpress']['dir']}/themes/twentythirteen"
+  not_if {::Directory.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
+end
+
+execute "Copy Wordpress Index to Parent Dir" do
+  command "cp #{node['wordpress']['dir']}/index.php ."
+  creates "#{node['wordpress']['parent_dir']}/index.php"
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
+end
+
+template "#{node['wordpress']['parent_dir']}/index.php" do
+  source 'wp-index.erb'
+  action :create
+end
+
+template "#{node['wordpress']['parent_dir']}/.gitignore" do
+  source 'gitignore.erb'
+  action :create
+end
+
 execute "mysql-install-wp-privileges" do
   command "/usr/bin/mysql -u root -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
   action :nothing
