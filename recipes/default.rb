@@ -79,12 +79,11 @@ end
 execute "Move WP-Content from WP-Dir" do
   command "cp #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
   creates "#{node['wordpress']['parent_dir']}/wp-content"
-  not_if {::Directory.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
 end
 
 execute "Cleaup Themes" do
   command "rm #{node['wordpress']['dir']}/plugins/hello.php && rm -rf #{node['wordpress']['dir']}/themes/twentytwelve && rm -rf #{node['wordpress']['dir']}/themes/twentyten && rm -rf #{node['wordpress']['dir']}/themes/twentythirteen"
-  not_if {::Directory.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
 end
 
 execute "Copy Wordpress Index to Parent Dir" do
