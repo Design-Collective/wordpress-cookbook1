@@ -79,7 +79,7 @@ end
 execute "Move WP-Content from WP-Dir" do
   command "cp #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
   creates "#{node['wordpress']['parent_dir']}/wp-content"
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content")}
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content/index.php")}
 end
 
 execute "Cleaup Themes" do
@@ -88,12 +88,12 @@ end
 
 execute "Copy Wordpress Index to Parent Dir" do
   command "cp #{node['wordpress']['dir']}/index.php ."
-  creates "#{node['wordpress']['parent_dir']}/index.php"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
 end
 
 template "#{node['wordpress']['parent_dir']}/index.php" do
   source 'wp-index.erb'
+  creates "#{node['wordpress']['parent_dir']}/index.php"
   action :create
 end
 
