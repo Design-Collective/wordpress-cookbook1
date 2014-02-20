@@ -84,7 +84,7 @@ end
 
 execute "Cleaup Themes" do
   cwd node['wordpress']['dir']
-  command "rm wp-content/plugins/hello.php && rm -rf wp-content/themes/twentytwelve && rm -rf wp-content/themes/twentyten && rm -rf wp-content/themes/twentythirteen"
+  command "rm -rf wp-content/themes/twentytwelve && rm -rf wp-content/themes/twentyten && rm -rf wp-content/themes/twentythirteen"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
 end
 
