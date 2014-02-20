@@ -36,7 +36,7 @@ node.set_unless['wordpress']['keys']['secure_auth'] = secure_password
 node.set_unless['wordpress']['keys']['logged_in'] = secure_password
 node.set_unless['wordpress']['keys']['nonce'] = secure_password
 
-excute "apt-get update" do
+execute "apt-get update" do
   command "/usr/bin/apt-get update"
 end
 
