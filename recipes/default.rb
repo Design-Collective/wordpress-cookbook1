@@ -89,6 +89,7 @@ execute "Cleaup Themes" do
 end
 
 execute "Copy Wordpress Index to Parent Dir" do
+  cwd node['wordpress']['parent_dir']
   command "cp #{node['wordpress']['dir']}/index.php ."
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
 end
