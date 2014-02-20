@@ -79,13 +79,12 @@ execute "Copy Wordpress Config into Parent Dir" do
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-config.php")}
 end
 
-execute "Move wp-cotent to parent Dir" do
-  command "cp -avr #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
-  creates "#{node['wordpress']['parent_dir']}/wp-content"
+execute "Move wp-content to parent Dir" do
+  command "cp -r #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content/index.php")}
 end
 
-execute "Cleaup Themes" do
+execute "Cleanup Themes" do
   cwd node['wordpress']['dir']
   command "rm -rf wp-content/themes/twentytwelve && rm -rf wp-content/themes/twentyten && rm -rf wp-content/themes/twentythirteen"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
@@ -103,6 +102,11 @@ template "#{node['wordpress']['parent_dir']}/index.php" do
   group "root"
   mode "0755"
   action :create
+end
+
+execute "Remove Default Index.html" do
+  cwd node['wordpress']['parent_dir']
+  command "sudo rm #{node['wordpress']['parent_dir']}/index.html"
 end
 
 execute "mysql-install-wp-privileges" do
