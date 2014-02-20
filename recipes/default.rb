@@ -36,6 +36,9 @@ node.set_unless['wordpress']['keys']['secure_auth'] = secure_password
 node.set_unless['wordpress']['keys']['logged_in'] = secure_password
 node.set_unless['wordpress']['keys']['nonce'] = secure_password
 
+excute "apt-get update" do
+  command "/usr/bin/apt-get update"
+end
 
 if node['wordpress']['version'] == 'latest'
   # WordPress.org does not provide a sha256 checksum, so we'll use the sha1 they do provide
