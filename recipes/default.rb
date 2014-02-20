@@ -80,8 +80,8 @@ execute "Copy Wordpress Config into Parent Dir" do
 end
 
 execute "Move wp-content to parent Dir" do
+  cwd node['wordpress']['parent_dir']
   command "cp -r #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content/index.php")}
 end
 
 execute "Cleanup Themes" do
