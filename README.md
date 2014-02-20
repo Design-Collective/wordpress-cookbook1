@@ -5,6 +5,8 @@ Installs and configures Wordpress according to the instructions at http://www.de
 
 Essentially, it configures a VM and also extracts the wp-content directory from the wordpress dir inorder to manage it as a submodule.
 
+You can use https://github.com/Design-Collective/wordpress-chef-boilerplate to get started with a project using this cookbook. The project includes a Berkshelf File,  Thorfile, Vagrant and Knife.rb.
+
 Requirements
 ============
 
