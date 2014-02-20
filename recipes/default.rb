@@ -105,15 +105,6 @@ template "#{node['wordpress']['parent_dir']}/index.php" do
   action :create
 end
 
-template "#{node['wordpress']['parent_dir']}/.gitignore" do
-  source 'gitignore.erb'
-  owner "root"
-  group "root"
-  mode "0755"
-  action :create
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\.gitignore")}
-end
-
 execute "mysql-install-wp-privileges" do
   command "/usr/bin/mysql -u root -p\"#{node['mysql']['server_root_password']}\" < #{node['mysql']['conf_dir']}/wp-grants.sql"
   action :nothing
