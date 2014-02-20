@@ -1,7 +1,9 @@
 Description
 ===========
 
-Installs and configures Wordpress according to the instructions at http://codex.wordpress.org/Installing_WordPress. Does not set up a wordpress blog. You will need to do this manually by going to http://hostname/wp-admin/install.php (this URL may be different if you change the attribute values).
+Installs and configures Wordpress according to the instructions at http://www.designcollective.io/blogs/manage-wordpress-with-git. Does not set up a wordpress blog. You will need to do this manually by going to http://hostname/wp-admin/install.php (this URL may be different if you change the attribute values).
+
+Essentially, it configures a VM and also extracts the wp-content directory from the wordpress dir inorder to manage it as a submodule.
 
 Requirements
 ============
@@ -58,23 +60,3 @@ The mysql::server recipe needs to come first, and contain an execute resource to
 
 This cookbook will decouple the mysql::server and be smart about detecting whether to use a local database or find a database server in the environment in a later version.
 
-License and Author
-==================
-
-Author:: Barry Steinglass (barry@opscode.com)
-Author:: Joshua Timberman (joshua@opscode.com)
-Author:: Seth Chisamore (schisamo@opscode.com)
-
-Copyright:: 2010-2011, Opscode, Inc
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
