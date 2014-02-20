@@ -156,7 +156,7 @@ log "wordpress_install_message" do
   message "Navigate to 'http://#{server_fqdn}/wp-admin/install.php' to complete wordpress installation"
 end
 
-template "#{node['wordpress']['dir']}/wp-config.php" do
+template "#{node['wordpress']['parent_dir']}/wp-config.php" do
   source "wp-config.php.erb"
   owner "root"
   group "root"
