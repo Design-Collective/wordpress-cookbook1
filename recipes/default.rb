@@ -70,20 +70,23 @@ execute "untar-wordpress" do
   creates "#{node['wordpress']['dir']}/wp-settings.php"
 end
 
-
 execute "Copy Wordpress Config into Parent Dir" do
-  command "cp #{node['wordpress']['dir']}/wp-config-sample.php #{node['wordpress']['parent_dir']}/wp-config.php"
+  cwd node['wordpress']['parent_dir']
+  command "cp /wordpress/wp-config-sample.php wp-config.php"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-config.php")}
 end
 
-execute "Move WP-Content from WP-Dir" do
+execute "Move wp-cotent to parent Dir" do
   command "cp -avr #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
   creates "#{node['wordpress']['parent_dir']}/wp-content"
   not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-content/index.php")}
 end
 
 execute "Cleaup Themes" do
-command "rm #{node['wordpress']['dir']}/wp-content/plugins/hello.php && rm -rf #{node['wordpress']['dir']}/wp-content/themes/twentytwelve && rm -rf #{node['wordpress']['dir']}/wp-content/themes/twentyten && rm -rf #{node['wordpress']['dir']}/wp-content/themes/twentythirteen"end
+  cwd node['wordpress']['dir']
+  command "rm /wp-content/plugins/hello.php && rm -rf /wp-content/themes/twentytwelve && rm -rf /wp-content/themes/twentyten && rm -rf /wp-content/themes/twentythirteen"
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
+end
 
 execute "Copy Wordpress Index to Parent Dir" do
   command "cp #{node['wordpress']['dir']}/index.php ."
@@ -92,12 +95,19 @@ end
 
 template "#{node['wordpress']['parent_dir']}/index.php" do
   source 'wp-index.erb'
+  owner "root"
+  group "root"
+  mode "0755"
   action :create
 end
 
 template "#{node['wordpress']['parent_dir']}/.gitignore" do
   source 'gitignore.erb'
+  owner "root"
+  group "root"
+  mode "0755"
   action :create
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\.gitignore")}
 end
 
 execute "mysql-install-wp-privileges" do
@@ -169,7 +179,7 @@ end
 
 web_app "wordpress" do
   template "wordpress.conf.erb"
-  docroot node['wordpress']['dir']
+  docroot node['wordpress']['parent_dir']
   server_name server_fqdn
   server_aliases node['wordpress']['server_aliases']
 end

@@ -30,6 +30,7 @@ default['wordpress']['checksum'] = ""
 default['wordpress']['repourl'] = "http://wordpress.org/"
 default['wordpress']['parent_dir'] = '/var/www'
 default['wordpress']['dir'] = "#{node['wordpress']['parent_dir']}/wordpress"
+default['wordpress']['wpcontent_dir'] = "#{node['wordpress']['parent_dir']}/wp-content"
 default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
 default['wordpress']['server_aliases'] = [node['fqdn']]
