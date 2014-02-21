@@ -7,8 +7,8 @@ Essentially, it configures a VM and also extracts the wp-content directory from 
 
 You can use https://github.com/Design-Collective/wordpress-chef-boilerplate to get started with a project using this cookbook. The project includes a Berkshelf File,  Thorfile, Vagrant and Knife.rb.
 
-For more information on how to get started, visit:
-http://www.designcollective.io/blogs/preconfigured-wordpress-vm-via-chef-vagrant-berkshelf
+For more information on how to get started, visit our post:
+[Vagrant and and Chef to deploy precongifured Virtual Machines for Wordpress Local Developmen](http://www.designcollective.io/blogs/preconfigured-wordpress-vm-via-chef-vagrant-berkshelf)
 
 
 Requirements
