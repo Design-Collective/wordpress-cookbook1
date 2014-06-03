@@ -23,4 +23,9 @@
   RewriteLog <%= node['apache']['log_dir'] %>/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
 
+  php_value upload_max_filesize 128M
+  php_value post_max_size 128M
+  php_value memory_limit 128M
+  php_value max_execution_time 64M  
+
 </VirtualHost>

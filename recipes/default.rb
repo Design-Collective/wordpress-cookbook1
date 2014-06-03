@@ -19,10 +19,12 @@
 
 include_recipe "apache2"
 include_recipe "mysql::server"
-include_recipe "mysql::ruby"
+include_recipe "mysql-chef_gem"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "apache2::mod_php5"
+
+node.default['wordpress']['parent_dir'] = "/srv/www"
 
 if node.has_key?("ec2")
   server_fqdn = node['ec2']['public_hostname']
@@ -30,6 +32,7 @@ else
   server_fqdn = node['fqdn']
 end
 
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
 node.set_unless['wordpress']['db']['password'] = secure_password
 node.set_unless['wordpress']['keys']['auth'] = secure_password
 node.set_unless['wordpress']['keys']['secure_auth'] = secure_password
@@ -107,6 +110,7 @@ end
 execute "Remove Default Index.html" do
   cwd node['wordpress']['parent_dir']
   command "sudo rm #{node['wordpress']['parent_dir']}/index.html"
+  only_if {::File.exists?("#{node['wordpress']['parent_dir']}/index.html")}
 end
 
 execute "mysql-install-wp-privileges" do
@@ -170,6 +174,10 @@ template "#{node['wordpress']['parent_dir']}/wp-config.php" do
     :nonce_key       => node['wordpress']['keys']['nonce']
   )
   notifies :write, "log[wordpress_install_message]"
+end
+
+execute "set www-data ownership of node['wordpress']['parent_dir']" do
+  command "chown -R www-data:www-data node['wordpress']['parent_dir']"
 end
 
 apache_site "000-default" do
