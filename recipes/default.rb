@@ -24,8 +24,6 @@ include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "apache2::mod_php5"
 
-node.default['wordpress']['parent_dir'] = "/srv/www"
-
 if node.has_key?("ec2")
   server_fqdn = node['ec2']['public_hostname']
 else
@@ -176,10 +174,6 @@ template "#{node['wordpress']['parent_dir']}/wp-config.php" do
   notifies :write, "log[wordpress_install_message]"
 end
 
-execute "set www-data ownership of node['wordpress']['parent_dir']" do
-  command "chown -R www-data:www-data node['wordpress']['parent_dir']"
-end
-
 apache_site "000-default" do
   enable false
 end
@@ -189,4 +183,8 @@ web_app "wordpress" do
   docroot node['wordpress']['parent_dir']
   server_name server_fqdn
   server_aliases node['wordpress']['server_aliases']
+end
+
+execute "set www-data ownership of #{node['wordpress']['parent_dir']}" do
+  command "chown -R www-data:www-data #{node['wordpress']['parent_dir']}"
 end
