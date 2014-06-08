@@ -35,4 +35,4 @@ default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
 default['wordpress']['server_aliases'] = [node['fqdn']]
 default['wordpress']['server_name'] = node['fqdn']
-default['wordpress']['server_port'] = 8000
+default['wordpress']['server_port'] = 8080
