@@ -183,6 +183,7 @@ web_app "wordpress" do
   docroot node['wordpress']['dir']
   server_name node['wordpress']['server_name']
   server_aliases node['wordpress']['server_aliases']
+  server_aliases node['wordpress']['server_port']
   server_port node['apache']['listen_ports']
   enable true
 end
