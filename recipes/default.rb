@@ -180,9 +180,11 @@ end
 
 web_app "wordpress" do
   template "wordpress.conf.erb"
-  docroot node['wordpress']['parent_dir']
-  server_name server_fqdn
+  docroot node['wordpress']['dir']
+  server_name node['wordpress']['server_name']
   server_aliases node['wordpress']['server_aliases']
+  server_port node['apache']['listen_ports']
+  enable true
 end
 
 execute "set www-data ownership of #{node['wordpress']['parent_dir']}" do
