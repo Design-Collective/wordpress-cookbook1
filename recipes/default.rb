@@ -191,3 +191,7 @@ end
 execute "set www-data ownership of #{node['wordpress']['parent_dir']}" do
   command "chown -R www-data:www-data #{node['wordpress']['parent_dir']}"
 end
+
+execute "apt-get update 2" do
+  command "sudo apt-get update --fix-missing"
+end
