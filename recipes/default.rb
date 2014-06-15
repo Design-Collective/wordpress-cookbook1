@@ -41,6 +41,10 @@ execute "apt-get update" do
   command "sudo /usr/bin/apt-get update"
 end
 
+execute "apt-get install git" do
+  command "sudo /usr/bin/apt-get install git"
+end
+
 if node['wordpress']['version'] == 'latest'
   # WordPress.org does not provide a sha256 checksum, so we'll use the sha1 they do provide
   require 'digest/sha1'
@@ -77,24 +81,25 @@ end
 execute "Copy Wordpress Config into Parent Dir" do
   cwd node['wordpress']['parent_dir']
   command "cp wordpress/wp-config-sample.php wp-config.php"
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\wp-config.php")}
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}/wp-config.php")}
 end
 
 execute "Move wp-content to parent Dir" do
   cwd node['wordpress']['parent_dir']
   command "cp -r #{node['wordpress']['dir']}/wp-content #{node['wordpress']['parent_dir']}"
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}/wp-content")}
 end
 
 execute "Cleanup Themes" do
   cwd node['wordpress']['dir']
   command "rm -rf wp-content/themes/twentytwelve && rm -rf wp-content/themes/twentyten && rm -rf wp-content/themes/twentythirteen"
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}/index.php")}
 end
 
 execute "Copy Wordpress Index to Parent Dir" do
   cwd node['wordpress']['parent_dir']
   command "cp #{node['wordpress']['dir']}/index.php ."
-  not_if {::File.exists?("#{node['wordpress']['parent_dir']}\\index.php")}
+  not_if {::File.exists?("#{node['wordpress']['parent_dir']}/index.php")}
 end
 
 template "#{node['wordpress']['parent_dir']}/index.php" do
