@@ -185,7 +185,7 @@ end
 
 web_app "wordpress" do
   template "wordpress.conf.erb"
-  docroot node['wordpress']['dir']
+  docroot node['wordpress']['parent_dir'] #This needs to be parent_dir, that's where the docroot is. Wordpress is in its folder but callsed into index from one level up.
   server_name node['wordpress']['server_name']
   server_aliases node['wordpress']['server_aliases']
   #server_aliases node['wordpress']['server_port'] #this was breaking the provisioning
