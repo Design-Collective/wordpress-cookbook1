@@ -38,7 +38,7 @@ node.set_unless['wordpress']['keys']['logged_in'] = secure_password
 node.set_unless['wordpress']['keys']['nonce'] = secure_password
 
 execute "apt-get update" do
-  command "sudo /usr/bin/apt-get update"
+  command "sudo apt-get update"
 end
 
 execute "apt-get install git" do
@@ -185,11 +185,18 @@ end
 
 web_app "wordpress" do
   template "wordpress.conf.erb"
-  docroot node['wordpress']['parent_dir']
-  server_name server_fqdn
+  docroot node['wordpress']['dir']
+  server_name node['wordpress']['server_name']
   server_aliases node['wordpress']['server_aliases']
+  server_aliases node['wordpress']['server_port']
+  server_port node['apache']['listen_ports']
+  enable true
 end
 
 execute "set www-data ownership of #{node['wordpress']['parent_dir']}" do
   command "chown -R www-data:www-data #{node['wordpress']['parent_dir']}"
+end
+
+execute "apt-get update 2" do
+  command "sudo apt-get update --fix-missing"
 end

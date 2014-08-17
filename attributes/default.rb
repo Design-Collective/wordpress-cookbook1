@@ -34,3 +34,5 @@ default['wordpress']['wpcontent_dir'] = "#{node['wordpress']['parent_dir']}/wp-c
 default['wordpress']['db']['database'] = "wordpressdb"
 default['wordpress']['db']['user'] = "wordpressuser"
 default['wordpress']['server_aliases'] = [node['fqdn']]
+default['wordpress']['server_name'] = node['fqdn']
+default['wordpress']['server_port'] = 8080
